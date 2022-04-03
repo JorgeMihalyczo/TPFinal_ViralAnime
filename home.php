@@ -1,16 +1,18 @@
 <?php 
-
-//seguridad de sessiones paginacion
+// seguridad de sesiones de paginación
 session_start();
 error_reporting(0);
-$varsesion= $_SESSION['usuario'];
-if($varsesion== null || $varsesion=''){
-    header("location:index.html");
-    die();
+// ¿con cookies o sin cookies?
+if(isset($_COOKIE["user"])){ 
+    $varsesion = $_COOKIE["user"];
+}else{
+    $varsesion = $_SESSION['usuario'];
 }
-
+if($varsesion == null || $varsesion =''){
+    header("location:index.php");
+    die();
+} 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,12 +27,14 @@ if($varsesion== null || $varsesion=''){
             <li><a href="cerrarSesion.php">Cerrar Sesión</a></li>
             <li>
                 <?php
-                    echo $_SESSION['usuario'];
+                    if(isset($_COOKIE["user"])){ 
+                        echo $_COOKIE["user"];
+                    }else{
+                        echo $_SESSION['usuario'];
+                    }
                 ?>
             </li>
         </ul>
-        
-        
     </nav>
     <h1>Bienvenido</h1>
 </body>

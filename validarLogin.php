@@ -1,28 +1,41 @@
 <?php
 include('db.php'); //--> para traer la variable conexion
 
-$email = $_POST['email'];
-$contrasenia = $_POST['contrasenia'];
-session_start();
-$_SESSION['usuario'] = $email;
+//Valida campos rellenados
+if (strlen($_POST['email']) >= 1 && strlen($_POST['contrasenia']) >= 1){
+    $email = $_POST['email'];
+    $contrasenia = $_POST['contrasenia'];
+    if(isset($_POST['recordado']))
+    $recordado = true;
 
+    session_start();
 
-$consulta = "SELECT*FROM usuarios where email='$email' and contrasenia='$contrasenia'";
-$resultado = mysqli_query($conexion,$consulta);
+    $_SESSION['usuario'] = $email;
 
-$filas = mysqli_num_rows($resultado);
+    // Valida usuario y contrasenia de la base de datos
+    $consulta = "SELECT*FROM usuarios where email='$email' and contrasenia='$contrasenia'";
+    $resultado = mysqli_query($conexion,$consulta);
 
-if($filas){
-    header("location:home.php"); 
+    $filas = mysqli_num_rows($resultado);
+
+    if($filas){
+        if (isset($recordado)){ // login correcto & casilla marcada -> setea cookie
+            setcookie("user", $email, time() + (86400 * 30)); 
+        }
+        header("location:home.php");
+    }else{
+        include("index.php");
+        ?>
+        <p class="errorLogin">El usuario y contraseña ingresados no son válidos</p>
+        <?php
+    }
+
+    mysqli_free_result($resultado);
+    mysqli_close($conexion);
 }else{
-    include("index.html");
+    include("index.php");
     ?>
-    <p>El usuario y contraseña ingresados no son válidos</p>
+    <p class="errorLogin">Debes rellenar todos los campos para el Login.</p>
     <?php
 }
-
-mysqli_free_result($resultado);
-mysqli_close($conexion);
-
-
 ?>

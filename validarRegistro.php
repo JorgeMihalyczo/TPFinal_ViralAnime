@@ -22,18 +22,18 @@ if (isset($_POST['registrarse'])) {
         if ($resultado) {
             ?> 
             <h3 class="ok">¡Te has inscripto correctamente!</h3>
-            <p><a href="index.html">Iniciar Sesion</a></p>
+            <p><a href="index.php">Iniciar Sesion</a></p>
             <?php
-        } else {
+        }else{
             ?> 
             <h3 class="bad">¡Ups ha ocurrido un error!</h3>
             <?php
         }
-    }   else {
-            ?> 
-            <h3 class="bad">¡Por favor completa todos los campos!</h3>
-            <p><a href="registro.html">registrarse</a></p>
-            <?php
+    }else{
+        ?> 
+        <h3 class="bad">¡Por favor completa todos los campos!</h3>
+        <p><a href="registro.html">registrarse</a></p>
+        <?php
     }
 }
 
